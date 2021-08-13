@@ -10,7 +10,8 @@
                 "D:/Vscode/Microsoft VS Code/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward",
                 "D:/Vscode/Microsoft VS Code/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include",
                 "D:/Vscode/Microsoft VS Code/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
-                "D:/Vscode/Microsoft VS Code/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"
+                "D:/Vscode/Microsoft VS Code/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include",
+                "D:/Vscode/Myfile/main/sm4"
             ],
             "defines": [
                 "_DEBUG",

@@ -46,7 +46,7 @@ void sm4_setkey( unsigned long SK[32], unsigned char key[16] )
   ```
   
 ### 3.加密算法
-
+![Alt text](https://img2018.cnblogs.com/blog/1670490/201908/1670490-20190817101444828-1894990204.png)
 ### 4.解密算法
 
 ### 5.密钥扩展算法

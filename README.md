@@ -63,4 +63,4 @@ cK<sub>i</sub> 的第j个字节 (i=0,1，...，31；j=0,1,2,3)，即 cK<sub>i</s
 &emsp;&emsp;&emsp;&emsp;&emsp;30373E45,&emsp; 4C535A61,&emsp;686F767D,&emsp;848B9299,  
 &emsp;&emsp;&emsp;&emsp;&emsp;A0A7AEB5,&emsp;BCC3CAD1,&emsp;D8DFE6ED,&emsp;F4FB0209,  
 &emsp;&emsp;&emsp;&emsp;&emsp;10171E25,&emsp; 2C333A41,&emsp;484F565D,&emsp;646B7279。  
-&emsp;&emsp;&emsp;&emsp;&emsp;解密密钥同加密密钥,解密使用的轮密钥由解密密钥生成,其轮密钥生成方法同加密过程的轮密钥生成方法。
+&emsp;&emsp;&emsp;解密密钥同加密密钥，解密使用的轮密钥由解密密钥生成，其轮密钥生成方法同加密过程的轮密钥生成方法。

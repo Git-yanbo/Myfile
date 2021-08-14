@@ -21,12 +21,12 @@
 
 * 设输入为 (X<sub>0</sub>，X<sub>1</sub>，X<sub>2</sub>，X<sub>3</sub>) ∈
 Z<sub>2</sub><sup>32</sup>，则轮函数F如下：  
-* F (X<sub>0</sub>，X<sub>1</sub>，X<sub>2</sub>，X<sub>3</sub>，rk) = X<sub>0</sub> ⊕ T (X<sub>1</sub> ⊕ X<sub>2</sub> ⊕ X<sub>3</sub> ⊕ rk)
+F (X<sub>0</sub>，X<sub>1</sub>，X<sub>2</sub>，X<sub>3</sub>，rk) = X<sub>0</sub> ⊕ T (X<sub>1</sub> ⊕ X<sub>2</sub> ⊕ X<sub>3</sub> ⊕ rk)
 
 ### &emsp;3.2 合成置换
 
 * T：Z<sub>2</sub><sup>32</sup> → Z<sub>2</sub><sup>32</sup> 是一个可逆变换，由非线性变换τ和线性变换L复合而成。τ由4个并行的S盒构成。设输入为A = (a<sub>0</sub>，a<sub>1</sub>，a<sub>2</sub>，a<sub>3</sub>) ∈ Z<sub>2</sub><sup>32</sup>，输出为B = (b<sub>0</sub>，b<sub>1</sub>，b<sub>2</sub>，b<sub>3</sub>) ∈ Z<sub>2</sub><sup>32</sup>。τ(A)如下:  
-* (b<sub>0</sub>，b<sub>1</sub>，b<sub>2</sub>，b<sub>3</sub>) = $\tau$(A) = (Sbox(a<sub>0</sub>)，Sbox(a<sub>1</sub>)，Sbox(a<sub>2</sub>)，Sbox(a<sub>3</sub>))
+(b<sub>0</sub>，b<sub>1</sub>，b<sub>2</sub>，b<sub>3</sub>) = $\tau$(A) = (Sbox(a<sub>0</sub>)，Sbox(a<sub>1</sub>)，Sbox(a<sub>2</sub>)，Sbox(a<sub>3</sub>))
 
 ## 4.加密算法
 

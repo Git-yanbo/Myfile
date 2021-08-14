@@ -12,30 +12,30 @@
 
 ## 2.密钥及密钥参量
 
-* 密钥长度为128bit，表示为MK = ($MK_0$，$MK_1$，$MK_2$，$MK_3$)，其中$MK_i$(i=0，1，2，3)为字。
-* 轮密钥表示为($rk_0$，$rk_0$，...，rk<sub>32</sub>其中$rk_i$(i=0，1，2，3)为bit字,轮密钥由密钥生成。
+* 密钥长度为128bit，表示为MK=(MK<sub>0</sub>，MK<sub>1</sub>，MK<sub>2</sub>，MK<sub>3</sub>)，其中MK<sub>i</sub>(i=0，1，2，3)为字。
+* 轮密钥表示为(rk<sub>0</sub>，rk<sub>1</sub>，...，rk<sub>32</sub>其中rk<sub>i</sub>(i=0，1，2，3)为bit字,轮密钥由密钥生成。
   
 ## 3.轮函数
 
 ### &emsp;&emsp;3.1 轮函数结构
 
-&emsp;&emsp;&emsp;设输入为（$X_0$，$X_1$，$X_2$，$X_3$）∈
+&emsp;&emsp;&emsp;设输入为（X<sub>0</sub>，X<sub>1</sub>，X<sub>2</sub>，X<sub>3</sub>）∈
 Z<sub>2</sub><sup>32</sup>，则轮函数F如下：  
-&emsp;&emsp;&emsp;F($X_0$，$X_1$，$X_2$，$X_3$，rk)=$X_0$$\bigoplus$T($X_1$$\bigoplus$$X_2$$\bigoplus$$X_3$$\bigoplus$rk)
+&emsp;&emsp;&emsp;F(&emsp;设输入为（X<sub>0</sub>，X<sub>1</sub>，X<sub>2</sub>，X<sub>3</sub>，rk)=X<sub>0</sub>$\bigoplus$T(X<sub>1</sub>$\bigoplus$X<sub>2</sub>$\bigoplus$X<sub>3</sub>$\bigoplus$rk)
 
 ### &emsp;&emsp;3.2 合成置换
 
-&emsp;&emsp;&emsp;T:Z<sub>2<sup>32</sub>$\rightarrow$Z<sub>2<sup>32d</sub>是一个可逆变换，由非线性变换$\tau$和线性变换L复合而成。$\tau$由4个并行的S盒构成。设输入为A=($a_0$，$a_1$，$a_2$，$a_3$)∈Z<sub>2</sub><sup>32</sup>，输出为B=($b_0$，$b_1$，$b_2$，$b_3$)∈Z<sub>2</sub><sup>32</sup>。$\tau$(A)如下:  
-&emsp;&emsp;&emsp;($b_0$，$b_1$，$b_2$，$b_3$)=$\tau$(A)=(Sbox($a_0$)，Sbox($a_1$)，Sbox($a_2$)，Sbox($a_3$))
+&emsp;&emsp;&emsp;T:Z<sub>2</sub><sup>32</sup>$\rightarrow$Z<sub>2</sub><sup>32</sup>是一个可逆变换，由非线性变换$\tau$和线性变换L复合而成。$\tau$由4个并行的S盒构成。设输入为A=(a<sub>0</sub>，a<sub>1</sub>，a<sub>2</sub>，a<sub>3</sub>)∈Z<sub>2</sub><sup>32</sup>，输出为B=(b<sub>0</sub>，b<sub>1</sub>，b<sub>2</sub>，b<sub>3</sub>)∈Z<sub>2</sub><sup>32</sup>。$\tau$(A)如下:  
+&emsp;&emsp;&emsp;(b<sub>0</sub>，b<sub>1</sub>，b<sub>2</sub>，b<sub>3</sub>)=$\tau$(A)=(Sbox(a<sub>0</sub>)，Sbox(a<sub>1</sub>)，Sbox(a<sub>2</sub>)，Sbox(a<sub>3</sub>))
 
 ## 4.加密算法
 
 &emsp;&emsp;&emsp;本加密算法由32次迭代运算和1次反序变换R组成。  
-&emsp;&emsp;&emsp;设明文输入为($X_0$，$X_1$，$X_2$，$X_3$)∈(Z<sub>2</sub><sup>32</sup>)<sup>4</sup>，密文输出为($Y_0$，$Y_1$，$Y_2$，$Y_3$)∈(Z<sub>2</sub><sup>32</sup>)<sup>4</sup>，轮密钥为$rk_i$∈Z<sub>2</sub><sup>32</sup>，i=0.1.2，...，31。加密算法的运算过程如下：  
+&emsp;&emsp;&emsp;设明文输入为(X<sub>0</sub>，X<sub>1</sub>，X<sub>2</sub>，X<sub>3</sub>)∈(Z<sub>2</sub><sup>32</sup>)<sup>4</sup>，密文输出为(Y<sub>0</sub>，Y<sub>1</sub>，Y<sub>2</sub>，Y<sub>3</sub>)∈(Z<sub>2</sub><sup>32</sup>)<sup>4</sup>，轮密钥为rk<sub>i</sub>∈Z<sub>2</sub><sup>32</sup>，i=0.1.2，...，31。加密算法的运算过程如下：  
 &emsp;&emsp;&emsp;1)&emsp;32次迭代运算如下：  
 &emsp;&emsp;&emsp;&emsp;X<sub>i+4</sub>=F(X<sub>i</sub>，X<sub>i+1</sub>，X<sub>i+2</sub>，X<sub>i+3</sub>，rk<sub>i</sub>)，i=0，1，2，...，31  
 &emsp;&emsp;&emsp;2)&emsp;反序变换如下：  
-&emsp;&emsp;&emsp;&emsp;($Y_0$，$Y_1$，$Y_2$，$Y_3$)=R(X<sub>32</sub>，X<sub>33</sub>，X<sub>34</sub>，X<sub>35</sub>)=(X<sub>35</sub>，X<sub>34</sub>，X<sub>33</sub>，X<sub>32</sub>)
+&emsp;&emsp;&emsp;&emsp;(Y<sub>0</sub>，Y<sub>1</sub>，Y<sub>2</sub>，Y<sub>3</sub>)=R(X<sub>32</sub>，X<sub>33</sub>，X<sub>34</sub>，X<sub>35</sub>)=(X<sub>35</sub>，X<sub>34</sub>，X<sub>33</sub>，X<sub>32</sub>)
 
 ## 5.解密算法  
 
@@ -43,14 +43,14 @@ Z<sub>2</sub><sup>32</sup>，则轮函数F如下：
 
 ## 6.密钥扩展算法  
 
-&emsp;&emsp;&emsp;加密过程使用的轮密钥由加密密钥生成，其中加密密钥MK=($MK_0$，$MK_1$，$MK_、2$，$MK_3$)∈(Z<sub>2</sub><sup>32</sup>)<sup>4</sup>，加密过程中的轮密钥生成方法如下所示：  
-&emsp;&emsp;&emsp;($K_0$，$K_1$，$K_2$，$K_3$)=($MK_0$$\bigoplus$$FK_0$，$MK_1$$\bigoplus$$FK_1$，$MK_2$$\bigoplus$$FK_2$，$MK_3$$\bigoplus$$FK_3$)  
-&emsp;&emsp;&emsp;$rk_i$=K<sub>i+4</sub>=K<sub>i</sub>$\bigoplus$T<sup>'</sup>(K<sub>i+1</sub>$\bigoplus$K<sub>i+2</sub>$\bigoplus$K<sub>i+3</sub>$\bigoplus$ck<sub>i</sub>)，i=0，1，...，31  
+&emsp;&emsp;&emsp;加密过程使用的轮密钥由加密密钥生成，其中加密密钥MK=(MK<sub>0</sub>，MK<sub>1</sub>，MK<sub>2</sub>，MK<sub>3</sub>)∈(Z<sub>2</sub><sup>32</sup>)<sup>4</sup>，加密过程中的轮密钥生成方法如下所示：  
+&emsp;&emsp;&emsp;(K<sub>0</sub>，K<sub>1</sub>，K<sub>2</sub>，K<sub>3</sub>)=(MK<sub>0</sub>$\bigoplus$FK<sub>0</sub>，MK<sub>1</sub>$\bigoplus$FK<sub>1</sub>，MK<sub>2</sub>$\bigoplus$FK<sub>2</sub>，MK<sub>3</sub>$\bigoplus$FK<sub>3</sub>)  
+&emsp;&emsp;&emsp;rk<sub>i</sub>=K<sub>i+4</sub>=K<sub>i</sub>$\bigoplus$T<sup>'</sup>(K<sub>i+1</sub>$\bigoplus$K<sub>i+2</sub>$\bigoplus$K<sub>i+3</sub>$\bigoplus$ck<sub>i</sub>)，i=0，1，...，31  
 &emsp;&emsp;&emsp;式中：  
 &emsp;&emsp;&emsp;1)&emsp;T<sup>'</sup>是将合成置换T的线性变换L替换为L<sup>'</sup>，如下：  
 &emsp;&emsp;&emsp;&emsp; L<sup>'</sup>(B)=B$\bigoplus$(B<<<3)$\bigoplus$(B<<<23)  
 &emsp;&emsp;&emsp;2)&emsp;系统参数FK的取值为:  
-&emsp;&emsp;&emsp;&emsp;$FK_0$=(A3B1BAC6)，$FK_1$=(56AA3350)，$FK_2$=(677D9197)，$FK_3$=(B27022DC)；  
+&emsp;&emsp;&emsp;&emsp;FK<sub>0</sub>=(A3B1BAC6)，FK<sub>1</sub>=(56AA3350)，FK<sub>2</sub>=(677D9197)，FK<sub>3</sub>=(B27022DC)；  
 &emsp;&emsp;&emsp;3)&emsp;固定参数CK取值方法为：  
 &emsp;&emsp;&emsp;&emsp;设cK<sub>i+j</sub>为
 cK<sub>i</sub>的第j个字节(i=0,1，...，31；j=0,1,2,3)，即cK<sub>i</sub>=(cK<sub>i+0</sub>，cK<sub>i+1</sub>，cK<sub>i+2</sub>，cK<sub>i+3</sub>)∈(Z<sub>2</sub><sup>8</sup>)<sup>4</sup>，则cK<sub>i+j</sub>=(4i+j)*7(mod25)。  

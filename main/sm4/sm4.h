@@ -72,4 +72,4 @@ void sm4_crypt_cbc( sm4_context *ctx,
 }
 #endif
  
-#endif /* sm4.h */
+#endif

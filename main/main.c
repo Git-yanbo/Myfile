@@ -41,9 +41,9 @@ int main()
 			out[i] = output[j];
 			cnt2++;
 		}
-		
-		len = len+16;
+
 		//后推128bit 
+		len = len+16;		
 		for(i=0; i<16; i++)
 		{
 			input[i] = input[i+len];

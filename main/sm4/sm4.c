@@ -56,9 +56,7 @@
 #include <string.h>
 #include <stdio.h>
  
-/*
- * 32-bit integer manipulation macros (big endian)
- */
+// 将字符型数组b的第i到第i+3位的二进制拼接成一个4*8=32bit的整数，存入n中  
 #ifndef GET_ULONG_BE
 #define GET_ULONG_BE(n,b,i)                             \
 {                                                       \
@@ -68,7 +66,8 @@
         | ( (unsigned long) (b)[(i) + 3]       );       \
 }
 #endif
- 
+
+// 将整数n的32位的二进制表示转换为4个char的数组，存入数组b的第i到第i+3位 
 #ifndef PUT_ULONG_BE
 #define PUT_ULONG_BE(n,b,i)                             \
 {                                                       \
@@ -79,18 +78,17 @@
 }
 #endif
  
-/*
- *rotate shift left marco definition
- *
- */
+// SHL(x,n) 可以得到左移 n 位之后的结果，然后与右移的结果 ((x)>>(32-n))逐位或来把右边空缺的n位补齐
 #define  SHL(x,n) (((x) & 0xFFFFFFFF) << n)
 #define ROTL(x,n) (SHL((x),n) | ((x) >> (32 - n)))
- 
+
+// 数值交换 
 #define SWAP(a,b) { unsigned long t = a; a = b; b = t; t = 0; }
  
 /*
- * Expanded SM4 S-boxes
- /* Sbox table: 8bits input convert to 8 bits output*/
+ * 扩展SM4 S盒
+ * Sbox表：8位输入转换为8位输出
+ */ 
  
 static const unsigned char SboxTable[16][16] = 
 {
@@ -112,10 +110,10 @@ static const unsigned char SboxTable[16][16] =
 {0x18,0xf0,0x7d,0xec,0x3a,0xdc,0x4d,0x20,0x79,0xee,0x5f,0x3e,0xd7,0xcb,0x39,0x48}
 };
  
-/* System parameter */
+/* 系统参数 */
 static const unsigned long FK[4] = {0xa3b1bac6,0x56aa3350,0x677d9197,0xb27022dc};
  
-/* fixed parameter */
+/* 固定参数 */
 static const unsigned long CK[32] =
 {
 0x00070e15,0x1c232a31,0x383f464d,0x545b6269,
@@ -130,9 +128,8 @@ static const unsigned long CK[32] =
  
  
 /*
- * private function:
- * look up in SboxTable and get the related value.
- * args:    [in] inch: 0x00~0xFF (8 bits unsigned value).
+ * 在SboxTable中查找并获取相关值
+ * args:[in] inch: 0x00~0xFF (8位无符号值)
  */
 static unsigned char sm4Sbox(unsigned char inch)
 {
@@ -142,10 +139,9 @@ static unsigned char sm4Sbox(unsigned char inch)
 }
  
 /*
- * private F(Lt) function:
- * "T algorithm" == "L algorithm" + "t algorithm".
- * args:    [in] a: a is a 32 bits unsigned value;
- * return: c: c is calculated with line algorithm "L" and nonline algorithm "t"
+ * "T algorithm" == "L algorithm" + "t algorithm"
+ * args:[in] a: a是32位无符号值
+ * 返回: c使用直线算法“L”和非线性算法“t”计算
  */
 static unsigned long sm4Lt(unsigned long ka)
 {
@@ -164,14 +160,13 @@ static unsigned long sm4Lt(unsigned long ka)
 }
  
 /*
- * private F function:
- * Calculating and getting encryption/decryption contents.
- * args:    [in] x0: original contents;
- * args:    [in] x1: original contents;
- * args:    [in] x2: original contents;
- * args:    [in] x3: original contents;
- * args:    [in] rk: encryption/decryption key;
- * return the contents of encryption/decryption contents.
+ * 计算并获取加密/解密内容
+ * args:[in] x0: 原始内容
+ * args:[in] x1: 原始内容
+ * args:[in] x2: 原始内容
+ * args:[in] x3: 原始内容
+ * args:[in] rk: 加密/解密密钥
+ * 返回加密/解密内容的内容
  */
 static unsigned long sm4F(unsigned long x0, unsigned long x1, unsigned long x2, unsigned long x3, unsigned long rk)
 {
@@ -180,9 +175,11 @@ static unsigned long sm4F(unsigned long x0, unsigned long x1, unsigned long x2, 
  
  
 /* private function:
- * Calculating round encryption key.
- * args:    [in] a: a is a 32 bits unsigned value;
+ * 计算圆形加密密钥
+ * args: [in] a: a是32位无符号值; 
  * return: sk[i]: i{0,1,2,3,...31}.
+ * 作用：变换T'，与加密轮函数中的T基本相同，同样是先进行Sbox的非线性替换，
+ *       然后进行线性变换，只是线性变换L改为了：rk = bb^(ROTL(bb, 13))^(ROTL(bb, 23));
  */
 static unsigned long sm4CalciRK(unsigned long ka)
 {
@@ -200,13 +197,14 @@ static unsigned long sm4CalciRK(unsigned long ka)
     return rk;
 }
 
-//密钥设置，对当前传入的主密钥进行32轮迭代，每次迭代的轮密钥都存放在ctx结构的sk数组中 
+// 密钥设置，对当前传入的主密钥进行32轮迭代，每次迭代的轮密钥都存放在ctx结构的sk数组中 
 static void sm4_setkey( unsigned long SK[32], unsigned char key[16] )
 {
     unsigned long MK[4];
     unsigned long k[36];
     unsigned long i = 0;
  
+ 	//通过宏将初始的key密钥转换为4个32位bit整数
     GET_ULONG_BE( MK[0], key, 0 );
     GET_ULONG_BE( MK[1], key, 4 );
     GET_ULONG_BE( MK[2], key, 8 );
@@ -217,15 +215,22 @@ static void sm4_setkey( unsigned long SK[32], unsigned char key[16] )
     k[3] = MK[3]^FK[3];
     for(; i<32; i++)
     {
+    	//对于第i轮的密钥SK[i] ，其是由k[i]和对k[i+1]^k[i+2]^k[i+3]^CK[i]的复合变换T’异或得到的
+		//其中CK是固定参数，虽然代码中直接给出了CK，实际上，其是有一定的计算方法的：
+		//设CKij为CKi的第j字节，即CKi=（cki0, cki1, cki2, cki3），则ckij=(4i+j)*7(mod 256)
         k[i+4] = k[i] ^ (sm4CalciRK(k[i+1]^k[i+2]^k[i+3]^CK[i]));
         SK[i] = k[i+4];
+        
 	}
  
 }
  
 /*
- * SM4 standard one round processing
- *
+ * 在 sm4_one_round 函数中，先将128位的输入 input[16]数组 转为4个32位的整数，
+ * 放入 ulbuf[4] 中，然后迭代调用 static unsigned long sm4F 函数进行32轮加密，
+ * 每一轮加密都需要使用之前的128位结果 ulbuf[i]，ulbuf[i+1]，ulbuf[i+2]，ulbuf[i+3]，
+ * 和该轮的密钥 sk[i]，产生出该轮的密文 ulbuf[i+4]，最后的密文存储在 ulbuf[35]~ulbuf[32]中，
+ * 转换为字符数组的形式存入 output[16]数组中。
  */
 static void sm4_one_round( unsigned long sk[32],
                     unsigned char input[16],
@@ -242,9 +247,6 @@ static void sm4_one_round( unsigned long sk[32],
     while(i<32)
     {
         ulbuf[i+4] = sm4F(ulbuf[i], ulbuf[i+1], ulbuf[i+2], ulbuf[i+3], sk[i]);
-// #ifdef _DEBUG
-//        	printf("rk(%02d) = 0x%08x,  X(%02d) = 0x%08x \n",i,sk[i], i, ulbuf[i+4] );
-// #endif
 	    i++;
     }
 	PUT_ULONG_BE(ulbuf[35],output,0);
@@ -255,6 +257,8 @@ static void sm4_one_round( unsigned long sk[32],
  
 /*
  * SM4 key schedule (128-bit, encryption) SM4关键时刻表
+ * 首先调用sm4_setkey_enc(&ctx,key)设置密钥，这个函数会设置mode为加密，
+ * 并调用static void sm4_setkey()来完成设置密钥的操作：
  */
 void sm4_setkey_enc( sm4_context *ctx, unsigned char key[16] )
 {
@@ -262,9 +266,7 @@ void sm4_setkey_enc( sm4_context *ctx, unsigned char key[16] )
 	sm4_setkey( ctx->sk, key );
 }
  
-/*
- * SM4 key schedule (128-bit, decryption) SM4关键时刻表
- */
+// SM4关键时刻表
 void sm4_setkey_dec( sm4_context *ctx, unsigned char key[16] )
 {
     int i;
@@ -278,7 +280,10 @@ void sm4_setkey_dec( sm4_context *ctx, unsigned char key[16] )
  
  
 /*
- * SM4-ECB block encryption/decryption SM4-ECB块加密/解密
+ * SM4-ECB块加密/解密
+ * 这个函数的作用是使用ECB模式，是分组密码的一种最基本的工作模式。
+ * 根据length的长度来进行循环，每次循环都调用sm4_one_round进行加密或者解密，
+ * 到底是加密还是解密，主要是根据第二个参数Mode来进行决定。
  */
  
 void sm4_crypt_ecb( sm4_context *ctx,
@@ -297,9 +302,7 @@ void sm4_crypt_ecb( sm4_context *ctx,
  
 }
  
-/*
- * SM4-CBC buffer encryption/decryption
- */
+//SM4-CBC缓冲区加密/解密
 void sm4_crypt_cbc( sm4_context *ctx,
                     int mode,
                     int length,

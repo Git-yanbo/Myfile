@@ -10,8 +10,6 @@
             "args": [
                 "-g", 
                 "${file}", 
-                "-I",
-                "D:/Vscode/Myfile/main/sm4",
                 "-o", 
                 "${fileBasenameNoExtension}.exe",
                 "-fexec-charset=GBK"//解决中文乱码

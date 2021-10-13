@@ -1,8 +1,8 @@
 /**
  * \file sm4.h
  */
-#ifndef XYSSL_SM4_H
-#define XYSSL_SM4_H
+#ifndef __SM4_H__
+#define __SM4_H__
  
 #define SM4_ENCRYPT     1
 #define SM4_DECRYPT     0
